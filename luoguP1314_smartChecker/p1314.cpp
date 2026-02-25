@@ -6,18 +6,18 @@ using namespace std;
 
 int main() {
     int n, m;
-    long long s;
-    int *w, *v, *l, *r;
-    int wMin = INT_MAX, wMax = INT_MIN;
-    scanf("%d %d %lld", &n, &m, &s);
-    w = (int*)malloc(n * sizeof(int));
-    v = (int*)malloc(n * sizeof(int));
+    long long standard;
+    int *weights, *values, *l, *r;
+    int weightL = INT_MAX, weightR = INT_MIN;
+    scanf("%d %d %lld", &n, &m, &standard);
+    weights = (int*)malloc(n * sizeof(int));
+    values = (int*)malloc(n * sizeof(int));
     l = (int*)malloc(m * sizeof(int));
     r = (int*)malloc(m * sizeof(int));
     for (int i = 0; i < n; i++) {
-        scanf("%d %d", &w[i], &v[i]);
-        wMin = w[i] < wMin ? w[i] : wMin;
-        wMax = w[i] > wMax ? w[i] : wMax;
+        scanf("%d %d", &weights[i], &values[i]);
+        weightL = weights[i] < weightL ? weights[i] : weightL;
+        weightR = weights[i] > weightR ? weights[i] : weightR;
     }
     for (int i = 0; i < m; i++) {
         scanf("%d %d", &l[i], &r[i]);
@@ -25,55 +25,55 @@ int main() {
         --r[i];
     }
 
-    int* wps;
-    long long* vps;
-    wps = (int*)malloc(n * sizeof(int));
-    vps = (long long*)malloc(n * sizeof(long long));
-    int weight;
+    int* weightsPrefixSum;
+    long long* valuesPrifixSum;
+    weightsPrefixSum = (int*)malloc(n * sizeof(int));
+    valuesPrifixSum = (long long*)malloc(n * sizeof(long long));
+    int currentWeight;
     long long yl=0, yr=0;
 
-    weight = wMin;
+    currentWeight = weightL;
     for (int i = 0; i < n; i++) {
-        wps[i] = (i > 0 ? wps[i - 1] : 0) + (w[i] >= weight ? 1 : 0);
-        vps[i] = (i > 0 ? vps[i - 1] : 0) + (w[i] >= weight ? v[i] : 0);
+        weightsPrefixSum[i] = (i > 0 ? weightsPrefixSum[i - 1] : 0) + (weights[i] >= currentWeight ? 1 : 0);
+        valuesPrifixSum[i] = (i > 0 ? valuesPrifixSum[i - 1] : 0) + (weights[i] >= currentWeight ? values[i] : 0);
     }
     for (int i = 0; i < m; i++) {
-        yl += (wps[r[i]] - (l[i] > 0 ? wps[l[i] - 1] : 0)) * (vps[r[i]] - (l[i] > 0 ? vps[l[i] - 1] : 0));
+        yl += (weightsPrefixSum[r[i]] - (l[i] > 0 ? weightsPrefixSum[l[i] - 1] : 0)) * (valuesPrifixSum[r[i]] - (l[i] > 0 ? valuesPrifixSum[l[i] - 1] : 0));
     }
-    //printf("gugugaga:%d %d\n", weight, yl);
-    weight = wMax;
+    //printf("gugugaga:%d %d\n", currentWeight, yl);
+    currentWeight = weightR;
     for (int i = 0; i < n; i++) {
-        wps[i] = (i > 0 ? wps[i - 1] : 0) + (w[i] >= weight ? 1 : 0);
-        vps[i] = (i > 0 ? vps[i - 1] : 0) + (w[i] >= weight ? v[i] : 0);
+        weightsPrefixSum[i] = (i > 0 ? weightsPrefixSum[i - 1] : 0) + (weights[i] >= currentWeight ? 1 : 0);
+        valuesPrifixSum[i] = (i > 0 ? valuesPrifixSum[i - 1] : 0) + (weights[i] >= currentWeight ? values[i] : 0);
     }
     for (int i = 0; i < m; i++) {
-        yr += (wps[r[i]] - (l[i] > 0 ? wps[l[i] - 1] : 0)) * (vps[r[i]] - (l[i] > 0 ? vps[l[i] - 1] : 0));
+        yr += (weightsPrefixSum[r[i]] - (l[i] > 0 ? weightsPrefixSum[l[i] - 1] : 0)) * (valuesPrifixSum[r[i]] - (l[i] > 0 ? valuesPrifixSum[l[i] - 1] : 0));
     }
-    //printf("gugugaga:%d %d\n", weight, yr);
+    //printf("gugugaga:%d %d\n", currentWeight, yr);
 
-    while (wMax - wMin > 1) {
-        weight = (wMin + wMax) / 2;
+    while (weightR - weightL > 1) {
+        currentWeight = (weightL + weightR) / 2;
         for (int i = 0; i < n; i++) {
-            wps[i] = (i > 0 ? wps[i - 1] : 0) + (w[i] >= weight ? 1 : 0);
-            vps[i] = (i > 0 ? vps[i - 1] : 0) + (w[i] >= weight ? v[i] : 0);
+            weightsPrefixSum[i] = (i > 0 ? weightsPrefixSum[i - 1] : 0) + (weights[i] >= currentWeight ? 1 : 0);
+            valuesPrifixSum[i] = (i > 0 ? valuesPrifixSum[i - 1] : 0) + (weights[i] >= currentWeight ? values[i] : 0);
         }
         long long y = 0;
         for (int i = 0; i < m; i++) {
-            y += (wps[r[i]] - (l[i] > 0 ? wps[l[i] - 1] : 0)) * (vps[r[i]] - (l[i] > 0 ? vps[l[i] - 1] : 0));
+            y += (weightsPrefixSum[r[i]] - (l[i] > 0 ? weightsPrefixSum[l[i] - 1] : 0)) * (valuesPrifixSum[r[i]] - (l[i] > 0 ? valuesPrifixSum[l[i] - 1] : 0));
         }
-        //printf("gugugaga:%d %d\n", weight, y);
-        if (y == s) {
+        //printf("gugugaga:%d %d\n", currentWeight, y);
+        if (y == standard) {
             printf("0");
             return 0;
         }
-        if (y > s) {
-            wMin = weight;
+        if (y > standard) {
+            weightL = currentWeight;
             yl = y;
         } else {
-            wMax = weight;
+            weightR = currentWeight;
             yr = y;
         }
     }
-    printf("%lld\n", abs(yl - s) < abs(yr - s) ? abs(yl - s) : abs(yr - s));
+    printf("%lld\n", abs(yl - standard) < abs(yr - standard) ? abs(yl - standard) : abs(yr - standard));
     return 0;
 }
