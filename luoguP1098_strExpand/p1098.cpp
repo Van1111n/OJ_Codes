@@ -1,5 +1,5 @@
 #include <cstdio>
-TODO:
+//TODO:
 bool isNum(char c){
     if ('0'<=c && c<='9') return true;
     else return false;

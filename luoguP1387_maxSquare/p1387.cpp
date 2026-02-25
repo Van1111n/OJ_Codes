@@ -28,7 +28,7 @@ int main(){
     for (int sideLength=1; sideLength<=(col<row?col:row); sideLength++){
         for (int i = 0; i + sideLength - 1 < row; i++) {
             for (int j = 0; j + sideLength - 1 < col; j++) {
-                int sumSquare = prefixSum[i+sideLength-1][j+sideLength-1] - (j > 0 ? prefixSum[i+sideLength-1][j-1] : 0) - (i > 0 ? prefixSum[i-1][j+sideLength-1] : 0) + (i > 0 && j > 0 ? prefixSum[i-1][j-1] : 0);
+                int sumSquare = prefixSum[i + sideLength - 1][j + sideLength - 1] - (j > 0 ? prefixSum[i + sideLength - 1][j - 1] : 0) - (i > 0 ? prefixSum[i - 1][j + sideLength - 1] : 0) + (i > 0 && j > 0 ? prefixSum[i - 1][j - 1] : 0);
                 //printf("start:(%d, %d), side length:%d, sum:%d\n", i, j, e, sum);
                 if (sumSquare==sideLength*sideLength){
                     //printf("found size length:%d\n", e);
