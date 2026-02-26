@@ -4,47 +4,47 @@
 using namespace std;
 
 int main() {
-    int n, m;
-    int* hs;
-    int hl, hr, h;
-    long long y;
-    hl = INT_MAX;
-    hr = INT_MIN;
-    scanf("%d %d", &n, &m);
-    hs = (int*)malloc(n * sizeof(int));
+    int n, targetLength;
+    int* heights;
+    int minHeight, maxHeight, curheight;
+    long long curLength;
+    minHeight = INT_MAX;
+    maxHeight = INT_MIN;
+    scanf("%d %d", &n, &targetLength);
+    heights = (int*)malloc(n * sizeof(int));
     for (int i = 0; i < n; i++) {
-        scanf("%d", &hs[i]);
-        hl = hs[i] < hl ? hs[i] : hl;
-        hr = hs[i] > hr ? hs[i] : hr;
+        scanf("%d", &heights[i]);
+        minHeight = heights[i] < minHeight ? heights[i] : minHeight;
+        maxHeight = heights[i] > maxHeight ? heights[i] : maxHeight;
     }
-    while (hr - hl > 1) {
-        h = (hl + hr) / 2;
-        y = 0;
+    while (maxHeight - minHeight > 1) {
+        curheight = (minHeight + maxHeight) / 2;
+        curLength = 0;
         for (int i = 0; i < n; i++) {
-            y += hs[i] > h ? hs[i] - h : 0;
+            curLength += heights[i] > curheight ? heights[i] - curheight : 0;
         }
-        //printf("between:%d, %d, height:%d, length:%d\n", hl, hr, h, y);
-        if (y < m) {
-            hr = h - 1;
-        } else if (y > m) {
-            hl = h;
+        //printf("between:%d, %d, height:%d, length:%d\n", minHeight, maxHeight, curheight, curLength);
+        if (curLength < targetLength) {
+            maxHeight = curheight - 1;
+        } else if (curLength > targetLength) {
+            minHeight = curheight;
         } else {
-            printf("%d\n", h);
+            printf("%d\n", curheight);
             return 0;
         }
     }
-    if (hl == hr) {
-        printf("%d\n", hl);
+    if (minHeight == maxHeight) {
+        printf("%d\n", minHeight);
         return 0;
     }
-    long long z=0;
+    long long maxHeightLength=0;
     for (int i=0; i<n; i++){
-        z += hs[i] > hr ? hs[i] - hr : 0;
+        maxHeightLength += heights[i] > maxHeight ? heights[i] - maxHeight : 0;
     }
-    if (z>=m) {
-        printf("%d\n", hr);
+    if (maxHeightLength>=targetLength) {
+        printf("%d\n", maxHeight);
     } else {
-        printf("%d\n", hl);
+        printf("%d\n", minHeight);
     }
     return 0;
 }
