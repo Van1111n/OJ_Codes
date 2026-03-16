@@ -26,6 +26,10 @@ void big_num_prt(int a[4005]) {
         if (a[k] != 0)
             break;
     }
+    if (k==-1) {
+        printf("0\n");
+        return;
+    }
     for (; k >= 0; k--) {
         printf("%d", a[k]);
     }
