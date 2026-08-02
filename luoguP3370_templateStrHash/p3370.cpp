@@ -16,6 +16,7 @@ class StrHash {
         size = 0;
     }
 
+    // core code
     const ullong hashFunc(const std::string& s) {
         ullong key = 0;
         for (auto c : s) {
